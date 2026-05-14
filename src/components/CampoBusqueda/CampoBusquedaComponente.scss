@@ -1,0 +1,45 @@
+@import "../../scss/style.scss";
+
+.busqueda {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+
+  &__icono {
+    position: absolute;
+    left: 1.2rem;
+    color: #888;
+    font-size: 1.1rem;
+    z-index: 10;
+    transition: color 0.3s ease;
+  }
+
+  &__campo {
+    width: 50%;
+    padding: 0.8rem 1.5rem 0.8rem 3.2rem;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: #333;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+
+    &::placeholder {
+      color: #aaa;
+      font-weight: 400;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: skyblue;
+      box-shadow: 0 4px 15px rgba(135, 206, 235, 0.2);
+      
+      & + .busqueda__icono {
+        color: skyblue;
+      }
+    }
+  }
+}

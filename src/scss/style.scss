@@ -1,0 +1,15 @@
+$primary: #97ce4c;
+$secondary: #b2e0f2;
+$tertiary: #fae51c;
+$neutral: #0e0513;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+  "neutral": $neutral,
+);
+
+@import "bootstrap/scss/bootstrap";
+
+@import url('https://fonts.googleapis.com/css2?family=Crafty+Girls&display=swap');
