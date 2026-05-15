@@ -1,0 +1,44 @@
+.iniciar_sesion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  &__contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  &__titulo {
+    font-size: 2rem;
+  }
+
+  &__cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 20;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  &__formulario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+  }
+}

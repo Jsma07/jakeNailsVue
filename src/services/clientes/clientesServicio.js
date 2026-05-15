@@ -1,8 +1,8 @@
-import { obtenerDatosApi } from "./obtenerDatosApiServicio";
+import { obtenerDatosServicio } from "../obtenerDatosServicio";
 
 /**
  * @returns {Promise<Object>} Promesa con los clientes.
  */
 export const obtenerClientes = async () => {
-  return await obtenerDatosApi("clientes");
+  return await obtenerDatosServicio("clientes");
 };

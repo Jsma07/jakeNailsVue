@@ -78,5 +78,5 @@ const toggleMenu = () => {
 </template>
 
 <style lang="scss">
-@import "./MenuComponente.scss";
+@use "./MenuComponente.scss";
 </style>

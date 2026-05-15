@@ -1,24 +1,26 @@
 <script setup>
 import { onMounted, computed } from "vue";
-import { useUsuariosAlmacen } from "../../../stores/usuariosAlmacen";
+import { useUsuariosAlmacen } from "../../../stores/usuarios/usuariosAlmacen.js";
 import VistaListarComponente from "../../../components/VistaListar/VistaListarComponente.vue";
 import ModalComponente from "../../../components/Modal/ModalComponente.vue";
 import { logicaVista } from "../../../composables/logicaVista.js";
 import { useGestionUsuarios } from "../../../composables/useGestionUsuarios.js";
+// import { useRolesAlmacen } from "../../../stores/roles/rolesAlmacen.js";
 
 const usuariosStore = useUsuariosAlmacen();
+// const rolesStore = useRolesAlmacen();
 
 const { manejarBusqueda } = logicaVista(
   usuariosStore,
   "Error al cargar usuarios",
 );
-
-// Lógica de gestión 
-const { 
-  mostrarModal, 
-  formularioUsuario, 
-  abrirModalCrear, 
-  guardarUsuario 
+const {
+  mostrarModal,
+  formularioUsuario,
+  abrirModalCrear,
+  abrirModalEditar,
+  guardarUsuario,
+  editando
 } = useGestionUsuarios(usuariosStore, 1); // ID Rol 1 para Administradores
 
 const headersTabla = [
@@ -38,17 +40,24 @@ const usuariosProcesados = computed(() => {
   }));
 });
 
+// const rolesProcesados = computed(() => {
+//   return rolesStore.lista.map((rol) => ({
+//     ...rol,
+//     estado_texto: rol.estadoRol === 1 ? "Activo" : "Inactivo",
+//   }));
+// });
+
 onMounted(async () => {
   try {
-    await usuariosStore.cargar();
+    await Promise.all([usuariosStore.cargar()]);
   } catch (error) {
-    console.log(error);
+    console.error("Error al cargar datos:", error);
   }
 });
 </script>
 
 <template>
-  <VistaListarComponente 
+  <VistaListarComponente
     titulo="Gestión de administradores"
     subtitulo="Administra usuarios con acceso de administrador y sus roles"
     icono="people-fill"
@@ -59,67 +68,99 @@ onMounted(async () => {
     :datos="usuariosProcesados"
     @buscar="manejarBusqueda"
     @accion="abrirModalCrear"
+    @editar="abrirModalEditar"
   />
 
   <ModalComponente
     :abierto="mostrarModal"
-    titulo="Registrar Administrador"
+    :titulo="editando ? 'Editar Administrador' : 'Registrar Administrador'"
     @cerrar="mostrarModal = false"
     @confirmar="guardarUsuario"
   >
     <div class="formulario">
       <div class="formulario__grupo">
         <label class="formulario__label">Tipo de Documento</label>
-        <select class="formulario__select" v-model="formularioUsuario.tipoDocumento">
-          <option value="CC">CC</option>
-          <option value="CE">CE</option>
-          <option value="TI">TI</option>
+        <select
+          class="formulario__select"
+          v-model="formularioUsuario.tipoDocumento"
+        >
+          <option class="formulario__option" value="C.C">
+            Cédula de Ciudadanía
+          </option>
+          <option class="formulario__option" value="C.E">
+            Cédula de Extranjería
+          </option>
+          <option class="formulario__option" value="T.I">
+            Tarjeta de Identidad
+          </option>
         </select>
       </div>
 
-      <div class="formulario__grupo">
+      <div class="formulario__grupo formulario__grupo--oculto">
         <label class="formulario__label">Rol</label>
-        <select class="formulario__select" v-model="formularioUsuario.rolId">
-          <option selected="true" value="1">Administrador</option>
-          <option value="2">Usuario</option>
+        <select
+          class="formulario__select"
+          v-model="formularioUsuario.idRol"
+          disabled
+        >
+          <option class="formulario__option" :value="1">Administrador</option>
         </select>
       </div>
 
       <div class="formulario__grupo">
         <label class="formulario__label">Documento</label>
-        <input class="formulario__input" type="text" v-model="formularioUsuario.Documento">
+        <input
+          class="formulario__input"
+          type="text"
+          v-model="formularioUsuario.documento"
+          placeholder="Escribe tu documento..."
+        />
       </div>
 
       <div class="formulario__grupo">
         <label class="formulario__label">Nombre</label>
-        <input class="formulario__input" type="text" v-model="formularioUsuario.nombre">
+        <input
+          class="formulario__input"
+          type="text"
+          v-model="formularioUsuario.nombre"
+          placeholder="Escribe tu nombre..."
+        />
       </div>
 
       <div class="formulario__grupo">
         <label class="formulario__label">Apellido</label>
-        <input class="formulario__input" type="text" v-model="formularioUsuario.apellido">
+        <input
+          class="formulario__input"
+          type="text"
+          v-model="formularioUsuario.apellido"
+          placeholder="Escribe tu apellido..."
+        />
       </div>
 
       <div class="formulario__grupo">
         <label class="formulario__label">Correo</label>
-        <input class="formulario__input" type="email" v-model="formularioUsuario.correo">
+        <input
+          class="formulario__input"
+          type="email"
+          v-model="formularioUsuario.correo"
+          placeholder="Escribe tu correo..."
+        />
       </div>
 
       <div class="formulario__grupo">
         <label class="formulario__label">Teléfono</label>
-        <input class="formulario__input" type="text" v-model="formularioUsuario.telefono">
+        <input
+          class="formulario__input"
+          type="text"
+          v-model="formularioUsuario.telefono"
+          placeholder="Escribe tu teléfono..."
+        />
       </div>
 
-      <div class="formulario__grupo">
-        <label class="formulario__label">Contraseña</label>
-        <input class="formulario__input" type="password" v-model="formularioUsuario.contrasena">
-      </div>
-
-     
-      
+      <div class="formulario__grupo"></div>
     </div>
   </ModalComponente>
 </template>
 <style lang="scss">
-@import './Administradores.scss';
+@use "./Administradores.scss";
 </style>

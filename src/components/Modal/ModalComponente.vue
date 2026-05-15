@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, watch } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 const props = defineProps({
   abierto: { type: Boolean, required: true },
@@ -10,7 +10,7 @@ const props = defineProps({
 
 const emit = defineEmits(["cerrar", "confirmar"]);
 
-const cerrar = () => {
+const cerrar = () => {  
   emit("cerrar");
 };
 
@@ -52,7 +52,7 @@ onUnmounted(() => {
               {{ textoCancelar }}
             </button>
             <button class="modal__boton modal__boton--confirmar" @click="$emit('confirmar')">
-              {{ textoConfirmar }}
+            <i class="bi bi-floppy"></i>  {{ textoConfirmar }}
             </button>
           </footer>
         </div>
@@ -62,5 +62,5 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
-@import "./ModalComponente.scss";
+@use "./ModalComponente.scss";
 </style>

@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
-import { RouterView } from 'vue-router';
-import MenuComponente from './components/Menu/MenuComponente.vue';
+import { ref } from "vue";
+import { RouterView } from "vue-router";
+import MenuComponente from "./components/Menu/MenuComponente.vue";
+import ToastComponente from "./components/Toast/ToastComponente.vue";
+
 
 const menuColapsado = ref(false);
 
@@ -13,13 +15,14 @@ const manejarAlternar = (estaColapsado) => {
 <template>
   <div class="layout">
     <MenuComponente @alternar="manejarAlternar" />
-    
-    <main 
-      class="layout__contenido" 
-      :class="{ 'layout__contenido--expandido': menuColapsado }"
+    <main
+    class="layout__contenido"
+    :class="{ 'layout__contenido--expandido': menuColapsado }"
     >
+    
       <RouterView />
     </main>
+    <ToastComponente />
   </div>
 </template>
 
@@ -30,13 +33,13 @@ const manejarAlternar = (estaColapsado) => {
 
   &__contenido {
     flex: 1;
-    margin-left: 280px; 
+    margin-left: 220px;
     transition: margin-left 0.3s ease;
     padding: 20px;
     background-color: #f8f9fa;
 
     &--expandido {
-      margin-left: 80px; 
+      margin-left: 80px;
     }
   }
 }

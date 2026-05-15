@@ -35,11 +35,11 @@ export const useBaseAlmacen = (funcionServicio, propiedadDatos = null) => {
       const nombre = (item.nombre || item.name || item.Nombre || "").toLowerCase();
       const apellido = (item.apellido || item.Apellido || "").toLowerCase();
       const documento = (item.documento || item.Documento || "").toString().toLowerCase();
-      console.log(filtro);
-      
+
       return nombre.includes(filtro) || apellido.includes(filtro) || documento.includes(filtro);
     });
   });
+
 
   return {
     lista,
@@ -47,5 +47,6 @@ export const useBaseAlmacen = (funcionServicio, propiedadDatos = null) => {
     textoFiltro,
     cargar,
     filtrados,
+    
   };
 };

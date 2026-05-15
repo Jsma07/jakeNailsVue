@@ -80,13 +80,13 @@
     padding: 1.5rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
+    justify-content:center;
+    gap: 1.5rem;
     background: #fafafa;
   }
 
   &__boton {
-    padding: 0.3rem 1.5rem;
+    padding: 0.3rem 2rem;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
@@ -105,7 +105,10 @@
     &--confirmar {
       background: royalblue;
       color: white;
-
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
       &:hover {
         background: blue;
         box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);

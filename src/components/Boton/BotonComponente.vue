@@ -29,5 +29,5 @@ defineEmits(["click"]);
 </template>
 
 <style lang="scss">
-@import "./BotonComponente.scss";
+@use "./BotonComponente.scss";
 </style>

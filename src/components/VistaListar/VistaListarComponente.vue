@@ -15,7 +15,7 @@ defineProps({
   datos: { type: Array, required: true }
 });
 
-defineEmits(["buscar", "accion"]);
+defineEmits(["buscar", "accion", "editar"]);
 </script>
 
 <template>
@@ -48,12 +48,12 @@ defineEmits(["buscar", "accion"]);
       </div>
 
       <div v-else class="vista__listar__tabla">
-        <TablaComponente :headers="columnas" :data="datos" />
+        <TablaComponente :headers="columnas" :data="datos" @editar="$emit('editar', $event)" />
       </div>
     </main>
   </div>
 </template>
 
 <style lang="scss">
-@import "./VistaListarComponente.scss";
+@use "./VistaListarComponente.scss";
 </style>

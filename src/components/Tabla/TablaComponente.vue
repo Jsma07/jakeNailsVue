@@ -11,7 +11,7 @@ const props = defineProps({
   },
 });
 </script>
-
+    
 <template>
 
 <div class="tabla">
@@ -28,8 +28,8 @@ const props = defineProps({
             <tr v-for="(fila, indice) in data" :key="indice">
                 <td v-for="(columna, index) in headers" :key="index">{{ fila[columna.key] }}</td>
                 <td class="tabla__acciones">
-                    <button class="tabla__accion tabla__accion--editar" @click="$emit('editar', fila.id)"><i class="bi bi-pencil-square"></i></button>
-                    <button class="tabla__accion tabla__accion--eliminar" @click="$emit('eliminar', fila.id)"><i class="bi bi-trash"></i></button>
+                    <button class="tabla__accion tabla__accion--editar" @click="$emit('editar', fila)"><i class="bi bi-pencil-square"></i></button>
+                    <!-- <button class="tabla__accion tabla__accion--eliminar" @click="$emit('eliminar', fila.id)"><i class="bi bi-trash"></i></button> -->
                 </td>
             </tr>
         </tbody>
@@ -40,5 +40,5 @@ const props = defineProps({
 </template>
 
 <style lang="scss">
-@import "./TablaComponente.scss";
+@use "./TablaComponente.scss";
 </style>

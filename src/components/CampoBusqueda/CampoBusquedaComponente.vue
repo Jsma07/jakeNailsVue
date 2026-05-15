@@ -30,5 +30,5 @@ watch(textoBusqueda, (nuevoValor) => {
 </template>
 
 <style lang="scss">
-@import "./campoBusquedaComponente.scss";
+@use "./campoBusquedaComponente.scss";
 </style>

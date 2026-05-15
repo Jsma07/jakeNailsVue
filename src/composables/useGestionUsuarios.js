@@ -1,4 +1,12 @@
 import { ref } from "vue";
+import { useToast } from "./useToast.js";
+import {
+  correoValido,
+  campoVacio,
+  telefonoValido,
+  documentoValido,
+  nombreCompletoValido,
+} from "../utils/validaciones.js";
 
 /**
  * Composable para gestionar la lógica de creación y edición de usuarios.
@@ -6,39 +14,37 @@ import { ref } from "vue";
  * @param {Number} idRol El ID del rol por defecto para esta vista.
  */
 export const useGestionUsuarios = (almacen, idRol) => {
+  const { mostrarToast } = useToast();
   const mostrarModal = ref(false);
   const editando = ref(false);
   const usuarioId = ref(null);
 
   // Modelo reactivo para el formulario
   const formularioUsuario = ref({
-    tipoDocumento: "CC",
-    Documento: "",
+    tipoDocumento: "C.C",
+    documento: "",
     nombre: "",
     apellido: "",
     correo: "",
     telefono: "",
     direccion: "",
     idRol: idRol,
-    Estado: 1,
-    contrasena: ""
+    estado: 1,
   });
-
 
   const abrirModalCrear = () => {
     editando.value = false;
     usuarioId.value = null;
     formularioUsuario.value = {
-      tipoDocumento: "CC",
-      Documento: "",
+      tipoDocumento: "C.C",
+      documento: "",
       nombre: "",
       apellido: "",
       correo: "",
       telefono: "",
       direccion: "",
       idRol: idRol,
-      Estado: 1,
-      contrasena: ""
+      estado: 1,
     };
     mostrarModal.value = true;
   };
@@ -48,40 +54,72 @@ export const useGestionUsuarios = (almacen, idRol) => {
    * @param {Object} usuario Datos del usuario a editar.
    */
   const abrirModalEditar = (usuario) => {
+    
     editando.value = true;
     usuarioId.value = usuario.IdEmpleado || usuario.IdCliente || usuario.id;
-    
+
     formularioUsuario.value = {
       tipoDocumento: usuario.tipoDocumento || usuario.Tip_Documento,
-      Documento: usuario.Documento,
-      Nombre: usuario.Nombre || usuario.nombre,
-      Apellido: usuario.Apellido || usuario.apellido,
-      Correo: usuario.Correo || usuario.correo,
-      Telefono: usuario.Telefono || usuario.telefono,
-      IdRol: usuario.IdRol,
-      Estado: usuario.Estado || usuario.estado,
-      Contrasena: "" // La contraseña no se edita aquí por seguridad
+      documento: usuario.Documento || usuario.documento,
+      nombre: usuario.Nombre || usuario.nombre,
+      apellido: usuario.Apellido || usuario.apellido,
+      correo: usuario.Correo || usuario.correo,
+      telefono: usuario.Telefono || usuario.telefono,
+      idRol: usuario.IdRol || usuario.idRol,
+      estado: usuario.Estado || usuario.estado,
     };
-    
-    mostrarModal.value = true;
+        mostrarModal.value = true;
   };
-
 
   const guardarUsuario = async () => {
     try {
-      if (editando.value) {
-        // console.log("Lógica para actualizar usuario", usuarioId.value);
-        // await almacen.actualizar(usuarioId.value, formularioUsuario.value);
-      } else {
-        // console.log("Lógica para crear usuario", formularioUsuario.value);
-        // await almacen.crear(formularioUsuario.value);
+      const errorValidacion =
+        campoVacio(
+          formularioUsuario.value.tipoDocumento,
+          "Tipo de documento",
+        ) ||
+        campoVacio(formularioUsuario.value.documento, "Documento") ||
+        documentoValido(formularioUsuario.value.documento) ||
+        campoVacio(formularioUsuario.value.nombre, "Nombre") ||
+        nombreCompletoValido(formularioUsuario.value.nombre, "Nombre") ||
+        campoVacio(formularioUsuario.value.apellido, "Apellido") ||
+        nombreCompletoValido(formularioUsuario.value.apellido, "Apellido") ||
+        campoVacio(formularioUsuario.value.correo, "Correo") ||
+        correoValido(formularioUsuario.value.correo) ||
+        campoVacio(formularioUsuario.value.telefono, "Teléfono") ||
+        telefonoValido(formularioUsuario.value.telefono);
+
+      if (errorValidacion) {
+        mostrarToast(errorValidacion, "error");
+        return;
       }
-      
+      if (editando.value) {
+        try {
+          await almacen.actualizarRegistro(
+            usuarioId.value,
+            formularioUsuario.value,
+          );
+          mostrarToast("Registro actualizado correctamente", "exito");
+          mostrarModal.value = false;
+        } catch (error) {
+          mostrarToast("Error al actualizar el registro", "error");
+          console.log(error);
+        }
+      } else {
+        try {
+          await almacen.crearRegistro(formularioUsuario.value);
+          mostrarToast("Registro guardado correctamente", "exito");
+          mostrarModal.value = false;
+        } catch (error) {
+          mostrarToast("Error al guardar el registro", "error");
+          console.log(error);
+        }
+      }
+
       mostrarModal.value = false;
-      await almacen.cargar(); 
+      await almacen.cargar();
       return true;
     } catch (error) {
-      console.error("Error al guardar usuario:", error);
       return false;
     }
   };
@@ -92,6 +130,6 @@ export const useGestionUsuarios = (almacen, idRol) => {
     editando,
     abrirModalCrear,
     abrirModalEditar,
-    guardarUsuario
+    guardarUsuario,
   };
 };

@@ -1,0 +1,30 @@
+
+.campoTexto {
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__label {
+    font-weight: 600;
+    color: #444;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+
+&__input {
+    padding: 0.3rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    outline: none;
+
+    &:focus {
+      border-color: royalblue;
+      box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+    }
+
+    
+  }
+}

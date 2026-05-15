@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, computed } from "vue";
-import { useClientesAlmacen } from "../../../stores/clientesAlmacen";
+import { useClientesAlmacen } from "../../../stores/clientes/clientesAlmacen.js";
 import VistaListarComponente from "../../../components/VistaListar/VistaListarComponente.vue";
 import { logicaVista } from "../../../composables/logicaVista.js";
 import ModalComponente from "../../../components/Modal/ModalComponente.vue";
